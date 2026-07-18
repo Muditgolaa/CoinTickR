@@ -2,7 +2,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <p className="text-3xl text-indigo-600">CoinTickR</p>
+    <p className="text-3xl text-indigo-600"></p>
 )
 }
 
