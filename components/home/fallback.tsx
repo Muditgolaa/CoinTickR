@@ -67,3 +67,55 @@ export const TrendingCoinsFallback = () => {
     </div>
   )
 }
+
+const categoriesSkeletonRows = Array.from({ length: 10 }, (_, i) => ({ id: i.toString() }))
+
+const categoriesSkeletonColumns: DataTableColumn<{ id: string }>[] = [
+  {
+    header: 'Category',
+    cellClassName: 'category-cell',
+    cell: () => <div className="category-skeleton skeleton" />,
+  },
+  {
+    header: 'Top Gainers',
+    cell: () => (
+      <div className="top-gainers-cell">
+        <div className="coin-skeleton skeleton" />
+        <div className="coin-skeleton skeleton" />
+        <div className="coin-skeleton skeleton" />
+      </div>
+    ),
+  },
+  {
+    header: '24h Change',
+    cell: () => (
+      <div className="change-cell">
+        <div className="value-skeleton-sm skeleton" />
+        <div className="change-icon skeleton" />
+      </div>
+    ),
+  },
+  {
+    header: 'Market Cap',
+    cellClassName: 'market-cap-cell',
+    cell: () => <div className="value-skeleton-lg skeleton" />,
+  },
+  {
+    header: '24h Volume',
+    cellClassName: 'volume-cell',
+    cell: () => <div className="value-skeleton-md skeleton" />,
+  },
+]
+
+export const CategoriesFallback = () => {
+  return (
+    <div id="categories-fallback" className="animate-pulse">
+      <h4>Top Categories</h4>
+      <DataTable
+        data={categoriesSkeletonRows}
+        columns={categoriesSkeletonColumns}
+        rowKey={(row) => row.id}
+      />
+    </div>
+  )
+}
