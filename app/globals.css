@@ -145,6 +145,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-dark-700 text-foreground;
   }
@@ -557,7 +558,7 @@
         @apply rounded-lg grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-3 sm:gap-5;
 
         li {
-          @apply text-base bg-dark-500 px-5 py-6 rounded-lg flex flex-col gap-3;
+          @apply text-base bg-dark-500 px-5 py-6 rounded-lg flex flex-col gap-3 break-words;
 
           .label {
             @apply text-purple-100;
@@ -703,7 +704,7 @@
     }
 
     .input-wrapper {
-      @apply bg-dark-400 h-12 w-full rounded-md flex items-center justify-between gap-3 py-4 pr-4;
+      @apply bg-dark-400 h-12 w-full rounded-md flex items-center justify-between gap-3 py-4 pl-4 pr-4;
 
       .input {
         @apply flex-1 text-lg! border-none font-medium bg-dark-400! focus-visible:ring-0 shadow-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
@@ -768,6 +769,38 @@
 
     .tabs-content {
       @apply gap-4! mt-2! md:gap-5! sm:grid-cols-2! lg:grid-cols-1! grid!;
+    }
+
+    .gl-card {
+      @apply flex items-center justify-between bg-dark-500 rounded-xl px-4 py-3;
+
+      .coin {
+        @apply flex items-center gap-3;
+
+        img {
+          @apply rounded-full;
+        }
+
+        .info {
+          @apply flex flex-col;
+
+          .name {
+            @apply font-semibold text-sm;
+          }
+
+          .symbol {
+            @apply text-purple-100 text-xs;
+          }
+        }
+      }
+
+      .stats {
+        @apply flex flex-col items-end gap-1;
+
+        .price {
+          @apply font-semibold text-sm;
+        }
+      }
     }
   }
 

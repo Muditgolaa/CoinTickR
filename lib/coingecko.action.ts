@@ -78,3 +78,40 @@ export async function getPools(
     return fallback;
   }
 }
+
+export async function getTopGainersLosers(limit = 4): Promise<{
+  gainers: TopGainersLosers[]
+  losers: TopGainersLosers[]
+}> {
+  const coins = await fetcher<CoinMarketData[]>('/coins/markets', {
+    vs_currency: 'usd',
+    order: 'market_cap_desc',
+    per_page: 250,
+    page: 1,
+    price_change_percentage: '24h',
+  })
+
+  const normalized: TopGainersLosers[] = coins
+    .filter(
+      (coin) =>
+        coin.price_change_percentage_24h !== null &&
+        coin.price_change_percentage_24h !== undefined,
+    )
+    .map((coin) => ({
+      id: coin.id,
+      name: coin.name,
+      symbol: coin.symbol,
+      image: coin.image,
+      price: coin.current_price,
+      priceChangePercentage24h: coin.price_change_percentage_24h,
+    }))
+
+  const sorted = [...normalized].sort(
+    (a, b) => b.priceChangePercentage24h - a.priceChangePercentage24h,
+  )
+
+  return {
+    gainers: sorted.slice(0, limit),
+    losers: sorted.slice(-limit).reverse(),
+  }
+}
