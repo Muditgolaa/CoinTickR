@@ -1,10 +1,12 @@
 import React from 'react'
-import { fetcher, getPools } from '@/lib/coingecko.action'
+import { fetcher, getPools , getTopGainersLosers } from '@/lib/coingecko.action'
 import { formatCurrency } from '@/lib/utils'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import LiveDataWrapper from '@/components/LiveDataWrapper'
 import Converter from '@/components/Converter'
+import TopGainersLosers from '@/components/topGainersLosers'
+
 
 const page = async ({ params }: NextPageProps) => {
     const { id } = await params
@@ -19,6 +21,8 @@ const page = async ({ params }: NextPageProps) => {
             precision: 'full'
         })
     ])
+
+    const { gainers, losers } = await getTopGainersLosers()
 
     const platform = coinData.asset_platform_id ? coinData.detail_platforms ?.[coinData.asset_platform_id] : null
     const network = platform?.geckoterminal_url.split('/')[3] || null
@@ -91,7 +95,7 @@ const page = async ({ params }: NextPageProps) => {
                     ))}
                 </ul>
             </div>
-            <p>Top Gainers and Losers</p>
+            <TopGainersLosers gainers={gainers} losers={losers} />
         </section>
     </main>
 }
