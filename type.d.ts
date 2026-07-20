@@ -90,9 +90,9 @@ interface SearchCoin {
   market_cap_rank: number | null
   thumb: string
   large: string
-  data: {
+  data?: {
     price?: number
-    price_change_percentage_24h: number
+    price_change_percentage_24h?: number
   }
 }
 
@@ -294,7 +294,7 @@ interface Pagination {
 }
 
 interface HeaderProps {
-  trendingCoins: TrendingCoin[]
+  trendingCoins?: SearchCoin[]
 }
 
 type SearchItemCoin = SearchCoin | TrendingCoin['item']
