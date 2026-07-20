@@ -115,3 +115,9 @@ export async function getTopGainersLosers(limit = 4): Promise<{
     losers: sorted.slice(-limit).reverse(),
   }
 }
+
+export async function searchCoins(query: string): Promise<SearchCoin[]> {
+  if (!query.trim()) return []
+  const result = await fetcher<{ coins: SearchCoin[] }>('/search', { query })
+  return result.coins
+}

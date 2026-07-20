@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
 import Header from '@/components/ui/header'
+import { fetcher } from '@/lib/coingecko.action'
+import { SearchProvider } from '@/context/SearchContext'
 
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' })
 
@@ -21,11 +23,21 @@ export const metadata: Metadata = {
   description: 'Real-Time Crypto Analytics Dashboard ',
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const trending = await fetcher<{ coins: TrendingCoin[] }>('/search/trending', undefined, 300)
+  const trendingCoins: SearchCoin[] = trending.coins.map(({ item }) => ({
+    id: item.id,
+    name: item.name,
+    symbol: item.symbol,
+    market_cap_rank: item.market_cap_rank,
+    thumb: item.thumb,
+    large: item.large,
+    data: {
+      price: item.data.price,
+      price_change_percentage_24h: item.data.price_change_percentage_24h.usd,
+    },
+  }))
+
   return (
     <html
       lang="en"
@@ -40,8 +52,10 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
-        <Header />
-        {children}
+        <SearchProvider>
+          <Header trendingCoins={trendingCoins} />
+          {children}
+        </SearchProvider>
       </body>
     </html>
   )
