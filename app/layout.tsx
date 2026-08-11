@@ -24,19 +24,24 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const trending = await fetcher<{ coins: TrendingCoin[] }>('/search/trending', undefined, 300)
-  const trendingCoins: SearchCoin[] = trending.coins.map(({ item }) => ({
-    id: item.id,
-    name: item.name,
-    symbol: item.symbol,
-    market_cap_rank: item.market_cap_rank,
-    thumb: item.thumb,
-    large: item.large,
-    data: {
-      price: item.data.price,
-      price_change_percentage_24h: item.data.price_change_percentage_24h.usd,
-    },
-  }))
+  let trendingCoins: SearchCoin[] = []
+  try {
+    const trending = await fetcher<{ coins: TrendingCoin[] }>('/search/trending', undefined, 300)
+    trendingCoins = trending.coins.map(({ item }) => ({
+      id: item.id,
+      name: item.name,
+      symbol: item.symbol,
+      market_cap_rank: item.market_cap_rank,
+      thumb: item.thumb,
+      large: item.large,
+      data: {
+        price: item.data.price,
+        price_change_percentage_24h: item.data.price_change_percentage_24h.usd,
+      },
+    }))
+  } catch (error) {
+    console.error('Failed to fetch trending coins for search:', error)
+  }
 
   return (
     <html

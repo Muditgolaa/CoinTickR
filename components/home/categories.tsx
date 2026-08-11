@@ -1,7 +1,7 @@
 import { fetcher } from "@/lib/coingecko.action"
 import DataTable from "@/components/ui/DataTable"
 import Image from "next/image"
-import {formatCurrency, formatPercentage} from '@/lib/utils'
+import {formatCompactCurrency, formatPercentage} from '@/lib/utils'
 import { TrendingUp,TrendingDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -43,12 +43,12 @@ const categories = async () => {
     {
         header: 'Market Cap',
         cellClassName: 'market-cap-cell',
-        cell: (category)=> formatCurrency(category.market_cap)
+        cell: (category)=> formatCompactCurrency(category.market_cap)
     },
     {
         header: '24h Volume',
         cellClassName: 'volume-cell',
-        cell: (category)=> formatCurrency(category.volume_24h)
+        cell: (category)=> formatCompactCurrency(category.volume_24h)
     },
 
     

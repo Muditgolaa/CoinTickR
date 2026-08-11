@@ -59,11 +59,11 @@ const CoinHeader = ({ livePriceChangePercentage24h, priceChangePercentage30d, na
                         })}
                         >
                             <p>{stat.formatter(stat.value)}</p>
-                            {stat.showIcon && stat.isUp ? (
+                            {stat.showIcon && (stat.isUp ? (
                                 <TrendingUp width={16} height={16}/>
                              ) : (
-                             <TrendingUp width={16} height={16}/>
-                             )}
+                             <TrendingDown width={16} height={16}/>
+                             ))}
                         </div>
                     </li>
                 ))}
