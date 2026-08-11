@@ -30,6 +30,22 @@ export function formatCurrency(
   });
 }
 
+export function formatCompactCurrency(
+  value: number | null | undefined,
+  currency?: string,
+) {
+  if (value === null || value === undefined || isNaN(value)) {
+    return '$0';
+  }
+
+  return value.toLocaleString('en-US', {
+    style: 'currency',
+    currency: currency?.toUpperCase() || 'USD',
+    notation: 'compact',
+    maximumFractionDigits: 2,
+  });
+}
+
 export function formatPercentage(change: number | null | undefined): string {
   if (change === null || change === undefined || isNaN(change)) {
     return '0.0%';

@@ -1,6 +1,6 @@
 import React from 'react'
 import { fetcher, getPools , getTopGainersLosers } from '@/lib/coingecko.action'
-import { formatCurrency } from '@/lib/utils'
+import { formatCompactCurrency } from '@/lib/utils'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import LiveDataWrapper from '@/components/LiveDataWrapper'
@@ -19,10 +19,16 @@ const page = async ({ params }: NextPageProps) => {
             vs_currency: 'usd',
             days: 1,
             precision: 'full'
-        })
+        }).catch(() => [] as OHLCData[])
     ])
 
-    const { gainers, losers } = await getTopGainersLosers()
+    let gainers: TopGainersLosers[] = []
+    let losers: TopGainersLosers[] = []
+    try {
+        ({ gainers, losers } = await getTopGainersLosers())
+    } catch (error) {
+        console.error('Failed to fetch top gainers/losers:', error)
+    }
 
     const platform = coinData.asset_platform_id ? coinData.detail_platforms ?.[coinData.asset_platform_id] : null
     const network = platform?.geckoterminal_url.split('/')[3] || null
@@ -33,7 +39,7 @@ const page = async ({ params }: NextPageProps) => {
     const coinDetails = [
         {
             label: 'Market Cap',
-            value: formatCurrency(coinData.market_data.market_cap.usd),
+            value: formatCompactCurrency(coinData.market_data.market_cap.usd),
         },
         {
             label: 'Market Cap Rank',
@@ -41,7 +47,7 @@ const page = async ({ params }: NextPageProps) => {
         },
         {
             label: 'Total Volume',
-            value: formatCurrency(coinData.market_data.total_volume.usd)
+            value: formatCompactCurrency(coinData.market_data.total_volume.usd)
         },
         {
             label: 'Website',

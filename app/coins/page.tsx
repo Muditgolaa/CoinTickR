@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import CoinsPagination from "@/components/ui/coinPagination";
 
-import { cn, formatPercentage, formatCurrency } from "@/lib/utils";
+import { cn, formatPercentage, formatCurrency, formatCompactCurrency } from "@/lib/utils";
 
 const Coins = async ({ searchParams }: NextPageProps) => {
     const {page} = await searchParams
@@ -70,7 +70,7 @@ const Coins = async ({ searchParams }: NextPageProps) => {
     {
       header: "Market Cap",
       cellClassName: "market-cap-cell",
-      cell: (coin) => formatCurrency(coin.market_cap),
+      cell: (coin) => formatCompactCurrency(coin.market_cap),
     },
   ];
 
