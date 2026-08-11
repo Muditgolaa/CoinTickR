@@ -89,7 +89,7 @@ export async function getTopGainersLosers(limit = 4): Promise<{
     per_page: 250,
     page: 1,
     price_change_percentage: '24h',
-  })
+  },600)
 
   const normalized: TopGainersLosers[] = coins
     .filter(

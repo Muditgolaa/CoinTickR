@@ -29,7 +29,7 @@ const TrendingCoins = async () => {
         cell: (coin) => {
           const item = coin.item
           return (
-            <Link href={`coins/${item.id}`} className="flex items-center gap-2">
+            <Link href={`coins/${item.id}`} prefetch={false} className="flex items-center gap-2">
               <Image
                 src={item.large}
                 alt={item.name}
