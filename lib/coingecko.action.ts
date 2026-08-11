@@ -21,13 +21,21 @@ export async function fetcher<T>(
     { skipEmptyString: true, skipNull: true },
   )
 
-  const response = await fetch(url, {
+  const doFetch = () =>
+  fetch(url, {
     headers: {
       'x-cg-demo-api-key': API_KEY,
       'Content-Type': 'application/json',
     } as Record<string, string>,
     next: { revalidate },
   })
+
+  let response = await doFetch()
+
+  if (response.status === 429) {
+    await new Promise((r) => setTimeout(r, 1500))
+    response = await doFetch()
+  }
 
   if (!response.ok) {
     const errorBody: CoinGeckoErrorBody = await response.json().catch(() => ({}))

@@ -3,6 +3,7 @@ import {
   ChartOptions,
   ColorType,
   DeepPartial,
+  Time,
 } from 'lightweight-charts';
 
 export const navItems = [
@@ -40,6 +41,32 @@ export const getCandlestickConfig = (): CandlestickSeriesPartialOptions => ({
   wickVisible: true,
 });
 
+function formatIST(time: Time, withDate: boolean): string {
+  let date: Date;
+  if (typeof time === 'number') {
+    date = new Date(time * 1000);            // intraday: unix seconds
+  } else if (typeof time === 'string') {
+    date = new Date(time);
+  } else {
+    date = new Date(Date.UTC(time.year, time.month - 1, time.day)); // daily
+  }
+
+  const opts: Intl.DateTimeFormatOptions = { timeZone: 'Asia/Kolkata' };
+  if (typeof time === 'number') {
+    opts.hour = '2-digit';
+    opts.minute = '2-digit';
+    opts.hour12 = false;
+    if (withDate) {
+      opts.day = '2-digit';
+      opts.month = 'short';
+    }
+  } else {
+    opts.day = '2-digit';
+    opts.month = 'short';
+  }
+  return new Intl.DateTimeFormat('en-IN', opts).format(date);
+}
+
 export const getChartConfig = (
   height: number,
   timeVisible: boolean = true,
@@ -67,6 +94,7 @@ export const getChartConfig = (
     borderColor: CHART_COLORS.border,
     timeVisible,
     secondsVisible: false,
+    tickMarkFormatter: (time: Time) => formatIST(time, false),
   },
   handleScroll: true,
   handleScale: true,
@@ -88,6 +116,7 @@ export const getChartConfig = (
   localization: {
     priceFormatter: (price: number) =>
       '$' + price.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+    timeFormatter: (time: Time) => formatIST(time, true),
   },
 });
 
