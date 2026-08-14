@@ -103,7 +103,6 @@ const candlestickchart = ({
         
         const converted = convertOHLCData(merged)
         candleSeriesRef.current.setData(converted)
-        chartRef.current?.timeScale().fitContent()
         const dataChanged = prevOhlcDataLength.current !== ohlcData.length
         if(dataChanged || mode === 'historical'){
             chartRef.current?.timeScale().fitContent()

@@ -60,7 +60,7 @@ export const useCoinGeckoWebSocket = ({
             if (stream.includes('@kline_')) {
                 const k = data.k
                 const candle: OHLCData = [
-                    k.t,
+                    Math.floor(Number(k.t) / 1000), 
                     Number(k.o ?? 0),
                     Number(k.h ?? 0),
                     Number(k.l ?? 0),
